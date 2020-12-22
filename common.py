@@ -7,6 +7,8 @@ import uuid
 HEAD_STRUCT = bytes('128sIq32s',encoding='utf-8')
 FILE_UPLOAD_URL = 'https://www.jiandanmaimai.cn/file/api/files/'
 CLIENT_INFO_URL = 'https://www.jiandanmaimai.cn/file/api/client/'
+FILE_QUERY_URL = 'https://www.jiandanmaimai.cn/file/api/files/?self=True&limit=20'
+
 
 url_regex = re.compile(
     r'^(?:http|ftp)s?://'  # http:// or https://

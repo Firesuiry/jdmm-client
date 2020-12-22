@@ -2,3 +2,4 @@
 /build/
 /.idea/
 /__pycache__/
+*.xls

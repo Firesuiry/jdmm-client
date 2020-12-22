@@ -10,6 +10,7 @@ from PySide2.QtWidgets import QApplication, QItemDelegate, QTableWidgetItem, QMe
 import requests
 import re
 
+from account_manage import AccountManager
 from common import check_url
 from data import get_key, set_key
 from file_server import JdmmFileServer
@@ -157,6 +158,7 @@ class MainWindow(QWidget):
 
         self.file_trans_tool = FileTransTool(self.window)
         self.file_server = JdmmFileServer(self.window, self)
+        self.account_manager = AccountManager(self.window, self)
 
     def login_btn_process(self, res):
         print('进入登陆信号回调')
