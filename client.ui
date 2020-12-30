@@ -24,7 +24,7 @@
    <item row="1" column="0">
     <widget class="QTabWidget" name="mainTab">
      <property name="currentIndex">
-      <number>4</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="loginTab">
       <attribute name="title">
@@ -368,107 +368,121 @@
        <item row="0" column="0" colspan="2">
         <widget class="QLabel" name="label_12">
          <property name="text">
-          <string>注意：此种方式上传文件需保持电脑开机且程序运行 才可以被他人方便地下载 并且需要IPV6网络的支持</string>
+          <string>注意：此种方式上传文件需保持电脑开机且程序运行 才可以被他人方便地下载 如果没有端口映射的话需要IPV6才能下载</string>
          </property>
         </widget>
        </item>
-       <item row="1" column="0" rowspan="10">
-        <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_20">
+         <property name="text">
+          <string>新发布文件区域</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLabel" name="label_23">
+         <property name="text">
+          <string>设置已有文件下载方式</string>
+         </property>
+         <property name="scaledContents">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
-          <layout class="QHBoxLayout" name="horizontalLayout">
-           <item>
-            <widget class="QLabel" name="label_14">
-             <property name="text">
-              <string>标题</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLineEdit" name="client_title_input">
-             <property name="text">
-              <string/>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <widget class="QLabel" name="label_15">
+          <widget class="QLabel" name="label_14">
            <property name="text">
-            <string>描述</string>
+            <string>标题</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QPlainTextEdit" name="client_des_input"/>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_2">
-           <item>
-            <widget class="QLabel" name="label_17">
-             <property name="text">
-              <string>价格   </string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLineEdit" name="client_money_input">
-             <property name="text">
-              <string/>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_3">
-           <item>
-            <widget class="QLabel" name="label_18">
-             <property name="text">
-              <string>文件解压密码</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLineEdit" name="client_unpress_pwd_input">
-             <property name="text">
-              <string/>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_4">
-           <item>
-            <widget class="QLabel" name="label_16">
-             <property name="text">
-              <string>文件分类</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QComboBox" name="client_cate_cb"/>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <widget class="QPushButton" name="client_choose_files_btn">
+          <widget class="QLineEdit" name="client_title_input">
            <property name="text">
-            <string>选择需要销售的文件</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="client_upload_btn">
-           <property name="text">
-            <string>开始上传并处理文件</string>
+            <string/>
            </property>
           </widget>
          </item>
         </layout>
        </item>
-       <item row="1" column="1">
+       <item row="2" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_6">
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_7">
+           <item>
+            <widget class="QLabel" name="label_22">
+             <property name="text">
+              <string>文件ID</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="file_id_input">
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QPushButton" name="check_file_btn">
+           <property name="text">
+            <string>检测文件可用性</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="label_15">
+         <property name="text">
+          <string>描述</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_10">
+         <item>
+          <widget class="QLabel" name="label_24">
+           <property name="text">
+            <string>文件标题：</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="file_title_label">
+           <property name="text">
+            <string>文件标题</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="4" column="0" rowspan="7">
+        <widget class="QPlainTextEdit" name="client_des_input"/>
+       </item>
+       <item row="4" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_8">
+         <item>
+          <widget class="QPushButton" name="client_choose_files_btn_2">
+           <property name="text">
+            <string>选择需要设置的文件</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="set_file_download_btn">
+           <property name="text">
+            <string>设置该文件的下载方式</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="5" column="1">
         <layout class="QHBoxLayout" name="horizontalLayout_5">
          <item>
           <widget class="QLabel" name="label_19">
@@ -486,8 +500,8 @@
          </item>
         </layout>
        </item>
-       <item row="2" column="1">
-        <layout class="QHBoxLayout" name="horizontalLayout_6">
+       <item row="6" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_9">
          <item>
           <widget class="QLabel" name="label_21">
            <property name="text">
@@ -504,7 +518,7 @@
          </item>
         </layout>
        </item>
-       <item row="3" column="1">
+       <item row="7" column="1">
         <layout class="QHBoxLayout" name="horizontalLayout_12">
          <item>
           <widget class="QLabel" name="label_32">
@@ -522,87 +536,8 @@
          </item>
         </layout>
        </item>
-       <item row="4" column="1">
-        <layout class="QHBoxLayout" name="horizontalLayout_7">
-         <item>
-          <widget class="QLabel" name="label_23">
-           <property name="text">
-            <string>当前客户分享文件数量</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="client_file_num_label">
-           <property name="text">
-            <string>-1</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item row="5" column="1">
-        <layout class="QHBoxLayout" name="horizontalLayout_8">
-         <item>
-          <widget class="QLabel" name="label_25">
-           <property name="text">
-            <string>当前客户端下载秘钥</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="client_secret_label">
-           <property name="text">
-            <string>-1</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item row="6" column="1">
-        <layout class="QHBoxLayout" name="horizontalLayout_9">
-         <item>
-          <widget class="QLabel" name="label_27">
-           <property name="text">
-            <string>当前服务器连接状态</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="client_connect_state_label">
-           <property name="text">
-            <string>-1</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item row="7" column="1">
-        <layout class="QHBoxLayout" name="horizontalLayout_10">
-         <item>
-          <widget class="QLabel" name="label_29">
-           <property name="text">
-            <string>当前工作目录(请勿随意更改)</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="client_base_path_label">
-           <property name="text">
-            <string>-1</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
        <item row="8" column="1">
         <layout class="QHBoxLayout" name="horizontalLayout_11">
-         <item>
-          <widget class="QPushButton" name="client_set_base_path_btn">
-           <property name="text">
-            <string>设置工作目录</string>
-           </property>
-          </widget>
-         </item>
          <item>
           <widget class="QPushButton" name="client_clear_log_btn">
            <property name="text">
@@ -617,13 +552,6 @@
            </property>
           </widget>
          </item>
-         <item>
-          <widget class="QPushButton" name="client_restart_btn">
-           <property name="text">
-            <string>重启分享服务器</string>
-           </property>
-          </widget>
-         </item>
         </layout>
        </item>
        <item row="9" column="1">
@@ -633,8 +561,72 @@
          </property>
         </widget>
        </item>
-       <item row="10" column="1">
+       <item row="10" column="1" rowspan="6">
         <widget class="QTextBrowser" name="client_log_text"/>
+       </item>
+       <item row="11" column="0">
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="QLabel" name="label_17">
+           <property name="text">
+            <string>价格   </string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="client_money_input">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="12" column="0">
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <item>
+          <widget class="QLabel" name="label_18">
+           <property name="text">
+            <string>文件解压密码</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="client_unpress_pwd_input">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="13" column="0">
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <item>
+          <widget class="QLabel" name="label_16">
+           <property name="text">
+            <string>文件分类</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="client_cate_cb"/>
+         </item>
+        </layout>
+       </item>
+       <item row="14" column="0">
+        <widget class="QPushButton" name="client_choose_files_btn">
+         <property name="text">
+          <string>选择需要销售的文件</string>
+         </property>
+        </widget>
+       </item>
+       <item row="15" column="0">
+        <widget class="QPushButton" name="client_upload_btn">
+         <property name="text">
+          <string>开始上传并处理文件</string>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -655,7 +647,7 @@
         <string>导出当前所有文件的xls信息</string>
        </property>
       </widget>
-      <widget class="QWidget" name="">
+      <widget class="QWidget" name="layoutWidget">
        <property name="geometry">
         <rect>
          <x>5</x>

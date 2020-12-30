@@ -157,15 +157,13 @@ class UpdateInfoWorker(QThread):
 
     def send_alive_signal(self):
         data = {
-            'ipv6':self.ip,
+            'ipv6': self.ip,
             'mac': self.mac,
-            'secret':self.secret,
-            'pk':self.clientid
+            'secret': self.secret,
+            'pk': self.clientid
         }
-        res = requests.post(CLIENT_INFO_URL,data,cookies=self.cookie)
+        res = requests.post(CLIENT_INFO_URL, data, cookies=self.cookie)
         self.info_change_signal.emit('L更新信息完成 响应:{}'.format(res.json()))
-
-
 
 
 class initWorker(QThread):
@@ -183,20 +181,6 @@ class initWorker(QThread):
         self.init_finish_signal.emit(res.json())
 
 
-class JdmmFileFtpServerWorker(QThread):
-    def __init__(self, ip, fileIDs, secret, base_dir):
-        super(JdmmFileFtpServerWorker, self).__init__()
-        self.ip = ip
-        self.fileIDs = fileIDs
-        self.secret = secret
-        self.base_dir = base_dir
-        self.ftp_server = None
-
-    def run(self):
-        self.ftp_server = FtpServer()
-        self.ftp_server.start_jdmm_file_server(self.ip, self.fileIDs, self.secret, self.base_dir)
-
-
 class JdmmFileServer:
     def __init__(self, window, main):
         self.window = window
@@ -204,40 +188,34 @@ class JdmmFileServer:
         self.add_log('正在初始化文件服务器')
         self.mac = get_MAC()
         self.ipv6 = get_Local_ipv6_address()
-        self.file_names = []
-        self.basedir = get_key('client_base_dir')
         self.secret = get_MAC()
         self.clientID = -1
         self.file_nums = -1
-        self.share_file_names = []
-        self.remote_share_file_names = []
-        self.ftp_server = None
-        self.info_update_worker = None
+        self.fid = ''
+        self.file_name = ''
+        self.file_data = {}
 
-        self.file_name_buffer = []
+        self.current_choose_file = ''
 
         self.window.client_mac_label.setText(self.mac)
         self.window.client_ipv6_label.setText(self.ipv6)
-        self.window.client_base_path_label.setText(self.basedir)
-        self.window.client_secret_label.setText(self.mac)
 
         self.window.client_choose_files_btn.clicked.connect(self.on_set_files_btn_clicked)
+        self.window.client_choose_files_btn_2.clicked.connect(self.on_set_files_btn_clicked)
         self.window.client_upload_btn.clicked.connect(self.on_upload_btn_clicked)
-        self.window.client_set_base_path_btn.clicked.connect(self.on_set_base_path_btn_clicked)
         self.window.client_clear_log_btn.clicked.connect(self.on_clear_log_btn_clicked)
-        self.window.client_restart_btn.clicked.connect(self.on_restart_btn_clicked)
         self.window.client_registe_client_btn.clicked.connect(self.on_registe_client_btn)
+        self.window.check_file_btn.clicked.connect(self.on_check_file_btn_clicked)
+        self.window.set_file_download_btn.clicked.connect(self.on_set_file_download_btn_clicked)
 
         self.init_worker = initWorker(self.mac, self.main)
         self.init_worker.init_finish_signal.connect(self.on_init_finished)
         self.add_log('基本信息初始化完成 登录后继续初始化')
 
-
     def reconfig(self):
         self.mac = get_MAC()
         self.ipv6 = get_Local_ipv6_address()
         self.secret = get_MAC()
-
 
     def on_login_success(self):
         self.add_log('检测客户端状态')
@@ -251,7 +229,6 @@ class JdmmFileServer:
         if code == 400:
             self.add_log('当前客户端未注册')
             self.window.client_id_label.setText('当前客户端未注册')
-            self.window.client_connect_state_label.setText('已获得服务器响应')
             self.add_log('如需将本机设置为文件分享服务器 请点击注册客户端')
             self.add_log('分享需要确保 1.本机21端口畅通 2.本机支持ipv6')
             self.add_log('如未登录请先登录')
@@ -261,103 +238,23 @@ class JdmmFileServer:
 
             self.add_log('当前客户端已注册 ID：{}'.format(self.clientID))
             self.window.client_id_label.setText('当前客户端已注册 ID：{}'.format(self.clientID))
-            self.window.client_connect_state_label.setText('已获得服务器响应')
 
-            self.update_share_files()
         self.add_log('初始化全部完成')
 
-    def update_share_files(self):
-        base = pathlib.Path(self.basedir)
-        files = base.glob('*')
-        self.share_file_names.clear()
-        for file in files:
-            if file.name.isdigit() and int(file.name) > 2000000:
-                if os.path.exists(file.joinpath('file.zip')):
-                    self.share_file_names.append(file.name)
-        self.restart_share_server()
-
-        self.file_name_buffer.clear()
-        for name in self.share_file_names:
-            if not int(name) in self.remote_share_file_names:
-                # 添加id到服务器
-                print(name, self.remote_share_file_names)
-                self.file_name_buffer.append(name)
-        self.on_update_share_files_finished_one()
-
-    def on_update_share_files_finished_one(self):
-        if len(self.file_name_buffer) < 1:
-            self.add_log('更新分享文件结束')
-            return
-        fileid = self.file_name_buffer.pop(0)
-        print('添加ID：{} 到服务器'.format(fileid))
-        data = {
-            'action': 'add',
-            'ipv6': self.ipv6,
-            'mac': self.mac,
-            'pk': self.clientID,
-            'file': fileid
-        }
-        self.update_share_file_http = HttpWorker(CLIENT_INFO_URL, 'POST', data, self.main.cookie)
-        self.update_share_file_http.finish_signal.connect(self.on_update_share_files_finished_one)
-        self.update_share_file_http.start()
-
-    def restart_share_server(self):
-        self.add_log('正在尝试重启文件分享服务器')
-        self.reconfig()
-        if self.ftp_server:
-            try:
-                print(' 关闭FTP服务器')
-                self.ftp_server.stop()
-                self.ftp_server.wait()
-                print(' 关闭FTP服务器完成')
-            except Exception as e:
-                print(e)
-        print('分享文件列表：{}'.format(self.share_file_names))
-        self.window.client_file_num_label.setText(str(len(self.share_file_names)))
-        self.ftp_server = JdmmFileFtpServerWorker(self.ipv6, self.share_file_names, self.mac, self.basedir)
-        self.ftp_server.start()
-
-        if self.info_update_worker:
-            try:
-                self.info_update_worker.stop()
-                self.info_update_worker.wait()
-            except Exception as e:
-                print(e)
-        self.info_update_worker = UpdateInfoWorker(self.clientID,self.ipv6,21,self.secret,self.mac,self.main.cookie)
-        self.info_update_worker.info_change_signal.connect(self.on_info_update_msg)
-        self.info_update_worker.start()
-
-    def on_info_update_msg(self,msg):
+    def on_info_update_msg(self, msg):
         if msg[0] == 'L':
             self.add_log(msg[1:])
         else:
             self.window.client_connect_state_label.setText(msg)
 
     def on_set_files_btn_clicked(self):
-        file_names = QFileDialog.getOpenFileNames(self.window, "选择分享的文件", r"C:\Users\Administrator\Desktop")
-        self.file_names = file_names[0]
+        file_names = QFileDialog.getOpenFileName(self.window, "选择分享的文件", r"C:\Users\Administrator\Desktop")
+        self.file_name = file_names[0]
         self.add_log('当前选择的文件：')
-        for file_name in self.file_names:
-            self.add_log(file_name)
-
-    def on_set_base_path_btn_clicked(self):
-        path = QFileDialog.getExistingDirectory(self.window, "选择文件夹", "/")
-        if path == '':
-            self.add_log('工作目录为空 设置失败')
-            return
-        self.add_log('设置工作文件目录：{}'.format(path))
-        self.basedir = path
-        self.window.client_base_path_label.setText(path)
-        set_key('client_base_dir', self.basedir)
-        self.on_restart_btn_clicked()
+        self.add_log(self.file_name)
 
     def on_clear_log_btn_clicked(self):
         self.window.client_log_text.clear()
-
-    def on_restart_btn_clicked(self):
-        self.add_log('当前重启有问题  请关闭客户端后再打开以重启')
-        return
-        self.restart_share_server()
 
     def on_registe_client_btn(self):
         self.add_log('尝试注册客户端到服务器')
@@ -390,8 +287,7 @@ class JdmmFileServer:
         money = self.window.client_money_input.text()
         file_format = 'ZIP'
         file_size = 0
-        for file_name in self.file_names:
-            file_size += os.path.getsize(file_name)
+        file_size += os.path.getsize(self.file_name)
         if file_size < 1:
             self.add_log('请重新选择要上传的文件 当前可能选择失败')
             return
@@ -408,18 +304,66 @@ class JdmmFileServer:
             self.add_log('上传失败 原因：{}'.format(msg))
             return
         self.add_log('上传成功：{}'.format(msg))
-        new_path = '{}/{}/'.format(self.basedir, id)
-        zip_path = '{}{}'.format(new_path, 'file.zip')
-        if not os.path.exists(new_path):
-            os.mkdir(new_path)
-        create_zip_file(self.file_names, zip_path)
-        self.file_names.clear()
-        self.on_restart_btn_clicked()
 
     def add_log(self, msg):
         print('添加log：{}'.format(msg))
         self.window.client_log_text.append(str(msg))
         self.window.client_log_text.moveCursor(self.window.client_log_text.textCursor().End)
+
+    def on_check_file_btn_clicked(self):
+        self.fid = self.window.file_id_input.text()
+        if not self.fid.isdigit():
+            self.add_log('文件ID应为数字 当前输入：{}'.format(self.fid))
+            return
+        self.fid = int(self.fid)
+        self.add_log('即将检查:{}'.format(self.fid))
+        url = f'https://www.jiandanmaimai.cn/file/api/file/{self.fid}/'
+        self.check_worker = HttpWorker(url, method='GET', cookie=self.main.cookie)
+        self.check_worker.finish_signal.connect(self.on_check_file_finished)
+        self.check_worker.start()
+
+    def on_check_file_finished(self, res):
+        print('on_check_file_finished')
+        data = res.json()
+        self.file_data = data
+        print(data)
+        title = data.get('title', '获取失败')
+        self.add_log(title)
+        self.window.file_title_label.setText(title[:15])
+
+    def on_set_file_download_btn_clicked(self):
+        if not self.fid:
+            self.add_log('请先点击检测文件可用性按钮')
+            return
+        if not self.file_name:
+            self.add_log('请设置目标文件')
+            return
+        print('on_set_file_download_btn_clicked')
+        self.file_data['download_url'] = f'CLIENT|{self.clientID}|{self.file_name}'
+        if 'main_img' in self.file_data: del self.file_data['main_img']
+        if 'tags_str' in self.file_data: del self.file_data['tags_str']
+        if 'main_img_url' in self.file_data: del self.file_data['main_img_url']
+        if 'file' in self.file_data: del self.file_data['file']
+        if 'download_num' in self.file_data: del self.file_data['download_num']
+        if 'grade' in self.file_data: del self.file_data['grade']
+        if 'c_time' in self.file_data: del self.file_data['c_time']
+        if 'creat_user' in self.file_data: del self.file_data['creat_user']
+        if 'tags' in self.file_data: del self.file_data['tags']
+        self.file_data['state'] = 'checking'
+        # print(self.file_data.keys())
+        url = f'https://www.jiandanmaimai.cn/file/api/file/{self.fid}/'
+        self.fid = ''
+        self.set_file_download_worker = HttpWorker(url, method='POST', data=self.file_data, cookie=self.main.cookie)
+        self.set_file_download_worker.finish_signal.connect(self.on_set_file_download_finished)
+        self.set_file_download_worker.start()
+        self.add_log(f"修改文件{self.file_data['title']} 目标下载地址：{self.file_data['download_url']}")
+
+    def on_set_file_download_finished(self, res):
+        data = res.json()
+        if data.get('msg'):
+            self.add_log(data.get('msg'))
+        else:
+            self.add_log(f'未知错误：{data}')
 
 
 if __name__ == '__main__':
