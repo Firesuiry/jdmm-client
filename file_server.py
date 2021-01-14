@@ -1,30 +1,20 @@
-import ctypes
-import time
-import zipfile
 
+import time
 import requests
 from PySide2.QtCore import QThread, Signal
 from PySide2.QtWidgets import QFileDialog
-from data import *
-
 from common import *
-import pathlib
-
-from ftp_server import FtpServer
 
 
-def create_zip_file(files, target):
-    f = zipfile.ZipFile(target, 'w', zipfile.ZIP_DEFLATED)
-    for file in files:
-        print('添加{}到压缩文件{}'.format(file, target))
-        f.write(file, file.split('/')[-1])
-    f.close()
+
+
 
 
 class PublistWorker(QThread):
     pub_finish_signal = Signal(str, int)
 
-    def __init__(self, cookie, title, des, money, cate, tiquma, unpress_pwd, file_format, file_size):
+    def __init__(self, cookie, title, des, money, cate, tiquma, unpress_pwd, file_format, file_size, client_id,
+                 file_name):
         super(PublistWorker, self).__init__()
         self.cookie = cookie
 
@@ -36,6 +26,8 @@ class PublistWorker(QThread):
         self.unpress_pwd = unpress_pwd
         self.file_format = file_format
         self.file_size = file_size
+        self.client_id = client_id
+        self.file_name = file_name
 
     def run(self):
         try:
@@ -78,7 +70,7 @@ class PublistWorker(QThread):
             'title': title,
             'money': int(float(money) * 100),
             'markdown_describe': des,
-            'download_url': 'CLIENT',
+            'download_url': 'CLIENT|{}|{}'.format(self.client_id, self.file_name),
             'tiquma': tiquma,
             'unzip_password': unpress_pwd,
             'file_format': file_format,
@@ -198,7 +190,7 @@ class JdmmFileServer:
         self.current_choose_file = ''
 
         self.window.client_mac_label.setText(self.mac)
-        self.window.client_ipv6_label.setText(self.ipv6)
+        self.window.client_ipv6_label.setText('')
 
         self.window.client_choose_files_btn.clicked.connect(self.on_set_files_btn_clicked)
         self.window.client_choose_files_btn_2.clicked.connect(self.on_set_files_btn_clicked)
@@ -235,6 +227,8 @@ class JdmmFileServer:
         elif code == 200:
             self.clientID = int(data['data']['id'])
             self.remote_share_file_names = data['data']['files']
+            self.ipv6 = data['data']['ipv6']
+            self.window.client_ipv6_label.setText(self.ipv6)
 
             self.add_log('当前客户端已注册 ID：{}'.format(self.clientID))
             self.window.client_id_label.setText('当前客户端已注册 ID：{}'.format(self.clientID))
@@ -263,7 +257,7 @@ class JdmmFileServer:
             return
         data = {
             'ipv6': self.ipv6,
-            'port': 21,
+            'port': 8080,
             'secret': self.mac,
             'mac': self.mac
         }
@@ -285,7 +279,7 @@ class JdmmFileServer:
         des = self.window.client_des_input.toPlainText()
         unpress_pwd = self.window.client_unpress_pwd_input.text()
         money = self.window.client_money_input.text()
-        file_format = 'ZIP'
+        file_format = self.file_name.split('.')[-1]
         file_size = 0
         file_size += os.path.getsize(self.file_name)
         if file_size < 1:
@@ -295,7 +289,7 @@ class JdmmFileServer:
         cate = int(self.window.client_cate_cb.currentText().split('|')[0])
 
         self.upload_worker = PublistWorker(self.main.cookie, title, des, money, cate, '', unpress_pwd, file_format,
-                                           file_size)
+                                           file_size, self.clientID, self.file_name)
         self.upload_worker.pub_finish_signal.connect(self.on_upload_finished)
         self.upload_worker.start()
 

@@ -1,6 +1,3 @@
-import csv
-import io
-
 from PySide2 import QtGui, QtCore, QtWidgets
 from PySide2.QtCore import QFile, QThread, Signal
 from PySide2.QtGui import QWindow, QKeyEvent
@@ -8,13 +5,11 @@ from PySide2.QtUiTools import QUiLoader
 from PySide2.QtWidgets import QApplication, QItemDelegate, QTableWidgetItem, QMessageBox, QWidget, QHBoxLayout
 
 import requests
-import re
 
 from account_manage import AccountManager
 from common import check_url
 from data import get_key, set_key
 from file_server import JdmmFileServer
-from file_trans_tool import FileTransTool
 from multi_uploader import MultiUploadWidget
 
 
@@ -156,7 +151,6 @@ class MainWindow(QWidget):
         if username and pwd:
             self.on_login_btn_clicked()
 
-        self.file_trans_tool = FileTransTool(self.window)
         self.file_server = JdmmFileServer(self.window, self)
         self.account_manager = AccountManager(self.window, self)
 

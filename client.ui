@@ -24,7 +24,7 @@
    <item row="1" column="0">
     <widget class="QTabWidget" name="mainTab">
      <property name="currentIndex">
-      <number>3</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="loginTab">
       <attribute name="title">
@@ -261,114 +261,21 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="fileTransTab">
-      <attribute name="title">
-       <string>IPV6文件传输工具</string>
-      </attribute>
-      <layout class="QGridLayout" name="gridLayout_4">
-       <item row="0" column="0">
-        <widget class="QWidget" name="widget" native="true">
-         <layout class="QFormLayout" name="formLayout_2">
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_3">
-            <property name="text">
-             <string>当前状态</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_5">
-            <property name="text">
-             <string>本机IPV6地址</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QLabel" name="ipv6Lable">
-            <property name="text">
-             <string>2400:dd01:102e:8:fc13:97e6:39e2:3b86</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="label_7">
-            <property name="text">
-             <string>当前分享文件</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QLabel" name="filePathLable">
-            <property name="text">
-             <string>D://StarCraft II/Support64</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="0">
-           <widget class="QLabel" name="label_13">
-            <property name="text">
-             <string>文件下载地址</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="1">
-           <widget class="QLineEdit" name="downloadUrlText">
-            <property name="text">
-             <string>文件下载地址</string>
-            </property>
-            <property name="readOnly">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QLabel" name="fileTransStateLable">
-            <property name="text">
-             <string>未启动</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="label_11">
-         <property name="text">
-          <string>分享成功后将文件下载地址在需要的电脑上下载就可以了，本工具需要IPV6支持</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QPushButton" name="setShareBtn">
-         <property name="text">
-          <string>设置分享文件夹</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0">
-        <spacer name="verticalSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>428</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-      </layout>
-     </widget>
      <widget class="QWidget" name="localServerTab">
       <attribute name="title">
-       <string>创建本地分享文件&amp;本地分享服务器</string>
+       <string>本地分享服务器管理中心</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_3">
        <item row="0" column="0" colspan="2">
         <widget class="QLabel" name="label_12">
          <property name="text">
-          <string>注意：此种方式上传文件需保持电脑开机且程序运行 才可以被他人方便地下载 如果没有端口映射的话需要IPV6才能下载</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;注意：此种方式上传文件需保持电脑开机且程序运行 才可以被他人方便地下载 &lt;a href=&quot;http://www.jiandanmaimai.cn/blog/article/8/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;首次使用请点此&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::RichText</enum>
+         </property>
+         <property name="openExternalLinks">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -505,7 +412,7 @@
          <item>
           <widget class="QLabel" name="label_21">
            <property name="text">
-            <string>当前的IPV6地址</string>
+            <string>当前客户端访问地址</string>
            </property>
           </widget>
          </item>
