@@ -222,7 +222,6 @@ class JdmmFileServer:
             self.add_log('当前客户端未注册')
             self.window.client_id_label.setText('当前客户端未注册')
             self.add_log('如需将本机设置为文件分享服务器 请点击注册客户端')
-            self.add_log('分享需要确保 1.本机21端口畅通 2.本机支持ipv6')
             self.add_log('如未登录请先登录')
         elif code == 200:
             self.clientID = int(data['data']['id'])
@@ -273,6 +272,9 @@ class JdmmFileServer:
         print('点击上传按钮')
         if not self.main.check_login():
             self.add_log('未登录 请先登录后再上传')
+            return
+        if self.clientID < 0:
+            self.add_log('当前客户端未注册 请先注册客户端')
             return
 
         title = self.window.client_title_input.text()
@@ -331,6 +333,9 @@ class JdmmFileServer:
             return
         if not self.file_name:
             self.add_log('请设置目标文件')
+            return
+        if self.clientID < 0:
+            self.add_log('当前客户端未注册 请先注册客户端')
             return
         print('on_set_file_download_btn_clicked')
         self.file_data['download_url'] = f'CLIENT|{self.clientID}|{self.file_name}'
