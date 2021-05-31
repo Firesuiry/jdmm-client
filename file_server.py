@@ -1,13 +1,8 @@
-
 import time
 import requests
 from PySide2.QtCore import QThread, Signal
 from PySide2.QtWidgets import QFileDialog
 from common import *
-
-
-
-
 
 
 class PublistWorker(QThread):
@@ -267,6 +262,9 @@ class JdmmFileServer:
     def on_registe_finished(self, res):
         self.add_log('获得服务器返回信息')
         print(res.json())
+        self.init_worker = initWorker(self.mac, self.main)
+        self.init_worker.init_finish_signal.connect(self.on_init_finished)
+        self.init_worker.start()
 
     def on_upload_btn_clicked(self):
         print('点击上传按钮')
@@ -295,11 +293,11 @@ class JdmmFileServer:
         self.upload_worker.pub_finish_signal.connect(self.on_upload_finished)
         self.upload_worker.start()
 
-    def on_upload_finished(self, msg, id):
-        if id < 0:
+    def on_upload_finished(self, msg, fid):
+        if fid < 0:
             self.add_log('上传失败 原因：{}'.format(msg))
             return
-        self.add_log('上传成功：{}'.format(msg))
+        self.add_log('上传成功：{} 文件ID：{}'.format(msg, fid))
 
     def add_log(self, msg):
         print('添加log：{}'.format(msg))
@@ -367,4 +365,3 @@ class JdmmFileServer:
 
 if __name__ == '__main__':
     files = ['client.ui', 'data.py']
-    create_zip_file(files)
