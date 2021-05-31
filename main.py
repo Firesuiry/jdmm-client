@@ -11,6 +11,7 @@ from common import check_url
 from data import get_key, set_key
 from file_server import JdmmFileServer
 from multi_uploader import MultiUploadWidget
+from prepub_manager import PrepubWidget
 
 
 class EmptyDelegate(QItemDelegate):
@@ -98,6 +99,9 @@ class PublistWorker(QThread):
 
             if '成功' in pub_id:
                 continue
+                
+            if url == 'PREPUB':
+                des += '\r\n本文件为预发布文件，购买后请根据提供的卖家联系方式联系卖家获取本文件'
             data = {
                 'title': title,
                 'money': int(float(money) * 100),
@@ -153,6 +157,7 @@ class MainWindow(QWidget):
 
         self.file_server = JdmmFileServer(self.window, self)
         self.account_manager = AccountManager(self.window, self)
+        self.prepub = PrepubWidget(self.window, self)
 
     def login_btn_process(self, res):
         print('进入登陆信号回调')

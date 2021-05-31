@@ -4,11 +4,10 @@ import re
 import subprocess
 import uuid
 
-HEAD_STRUCT = bytes('128sIq32s',encoding='utf-8')
+HEAD_STRUCT = bytes('128sIq32s', encoding='utf-8')
 FILE_UPLOAD_URL = 'https://www.jiandanmaimai.cn/file/api/files/'
 CLIENT_INFO_URL = 'https://www.jiandanmaimai.cn/file/api/client/'
 FILE_QUERY_URL = 'https://www.jiandanmaimai.cn/file/api/files/?self=True&limit=20'
-
 
 url_regex = re.compile(
     r'^(?:http|ftp)s?://'  # http:// or https://
@@ -17,8 +16,13 @@ url_regex = re.compile(
     r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'  # ...or ip
     r'(?::\d+)?'  # optional port
     r'(?:/?|[/?]\S+)$', re.IGNORECASE)
+
+
 def check_url(url):
+    if url == 'PREPUB':
+        return True
     return re.match(url_regex, url) is not None
+
 
 def cal_md5(file_path):
     with open(file_path, 'rb') as fr:
@@ -49,6 +53,7 @@ def get_Local_ipv6_address():
     except Exception as e:
         print(e)
         return
+
 
 def get_MAC():
     mac = uuid.uuid1().hex[-12:].upper()
