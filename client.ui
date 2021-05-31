@@ -17,7 +17,7 @@
    <item row="1" column="0">
     <widget class="QTabWidget" name="mainTab">
      <property name="currentIndex">
-      <number>4</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="loginTab">
       <attribute name="title">
@@ -618,13 +618,28 @@ p, li { white-space: pre-wrap; }
           </widget>
          </item>
          <item>
+          <widget class="QPushButton" name="select_baidupan_out_file">
+           <property name="text">
+            <string>选择百度网盘导出文件</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QTextBrowser" name="textBrowser_2">
            <property name="html">
             <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'SimSun'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;网盘文件预发布功能待开发&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;百度网盘文件发布介绍&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;1.找到百度网盘的BaiduYunCacheFileV0.db文件 寻找方式请看：&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;https://gitee.com/firesuiry/jdmm-client/wikis/%E5%A6%82%E4%BD%95%E6%89%BE%E5%88%B0%E7%99%BE%E5%BA%A6%E7%BD%91%E7%9B%98%E7%9A%84BaiduYunCacheFileV0.db%E6%96%87%E4%BB%B6?sort_id=4075325&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;2.点击上方按钮 选中找到的文件&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;3.选择完成后会在本程序所在目录下生成 要发布的文件.xls文件&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;打开生成的xls文件 编辑要发布的文件 复制到批量上传功能页进行发布&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="openExternalLinks">
+            <bool>false</bool>
            </property>
           </widget>
          </item>
