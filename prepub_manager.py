@@ -56,7 +56,7 @@ class GenerateBaiduPanFileXlsWorker(QThread):
         row = 1
         for data in self.values:
             size = data[1]
-            if size < 1024:
+            if size < 2**12:
                 continue
             sheet.write(row, 0, data[0])
             sheet.write(row, 1, f"文件标题：{data[3]}{data[0]}")
