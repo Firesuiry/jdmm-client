@@ -33,7 +33,7 @@ class GenerateBaiduPanFileXlsWorker(QThread):
         conn = sqlite3.connect(self.dbpath)
         cursor = conn.cursor()
         # 执行查询语句：
-        cursor.execute('select server_filename,file_size,md5,parent_path from cache_file ORDER BY file_size DESC')
+        cursor.execute('select server_filename,file_size,md5,parent_path from cache_file')
 
         # 使用featchall获得结果集（list）
         values = cursor.fetchall()
