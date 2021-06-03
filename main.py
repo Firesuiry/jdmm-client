@@ -10,7 +10,7 @@ from account_manage import AccountManager
 from common import check_url
 from data import get_key, set_key
 from file_server import JdmmFileServer
-from multi_uploader import MultiUploadWidget
+from multi_uploader import MultiUploadWidget, get_table_content, set_table_content
 from prepub_manager import PrepubWidget
 
 
@@ -22,12 +22,7 @@ class EmptyDelegate(QItemDelegate):
         return None
 
 
-def get_table_content(table, row, colum):
-    thing = table.item(row, colum)
-    if thing:
-        return thing.text()
-    else:
-        return ''
+
 
 
 class LoginWorker(QThread):
@@ -84,6 +79,7 @@ class PublistWorker(QThread):
             money = get_table_content(table, row, 6)
             file_format = get_table_content(table, row, 7)
             file_size = get_table_content(table, row, 8)
+            main_img = get_table_content(table, row, 9)
             cate = int(self.cateCb.currentText().split('|')[0])
             if not title:
                 continue
@@ -99,7 +95,7 @@ class PublistWorker(QThread):
 
             if '成功' in pub_id:
                 continue
-                
+
             if url == 'PREPUB':
                 des += '\r\n本文件为预发布文件，购买后请根据提供的卖家联系方式联系卖家获取本文件'
             data = {
@@ -113,18 +109,17 @@ class PublistWorker(QThread):
                 'file_size': file_size,
                 'category': cate
             }
+            files = {}
+            if main_img:
+                f = files['main_img'] = open(main_img, 'rb')
             print(data)
-            res = requests.post(post_url, data, cookies=self.cookie)
+            res = requests.post(post_url, data, cookies=self.cookie, files=files)
             self.pub_finish_signal.emit(res, row)
+            if main_img:
+                f.close()
 
 
-def set_table_content(table, row, colum, content, block_col=-1):
-    print('设置表格内容 行：{} 列：{} 内容：{}'.format(row, colum, content))
-    if colum == block_col:
-        return
-    item = QTableWidgetItem()
-    item.setText(content)
-    table.setItem(row, colum, item)
+
 
 
 class MainWindow(QWidget):
@@ -136,7 +131,7 @@ class MainWindow(QWidget):
         loader = QUiLoader()
 
         self.window = loader.load(ui_file)
-        self.multi_uploader = MultiUploadWidget(self.window)
+        self.multi_uploader = MultiUploadWidget(self.window, self)
 
         self.function_connect()
         self.arg_init()
@@ -343,7 +338,6 @@ class MainWindow(QWidget):
                 self.pasteSelection()
 
         return super().eventFilter(obj, event)
-
 
 
 if __name__ == '__main__':

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>961</width>
+    <width>1118</width>
     <height>588</height>
    </rect>
   </property>
@@ -233,6 +233,11 @@
            <string>文件大小</string>
           </property>
          </column>
+         <column>
+          <property name="text">
+           <string>主图位置</string>
+          </property>
+         </column>
         </widget>
        </item>
        <item row="2" column="0">
@@ -249,6 +254,13 @@
         <widget class="QPushButton" name="clearBtn">
          <property name="text">
           <string>清空</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QPushButton" name="setMainImgBtn">
+         <property name="text">
+          <string>设置当前选中文件主图</string>
          </property>
         </widget>
        </item>
