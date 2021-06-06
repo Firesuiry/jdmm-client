@@ -13,11 +13,11 @@
   <property name="windowTitle">
    <string>简单麦麦客户端-www.jiandanmaimai.cn</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_7">
-   <item row="1" column="0">
+  <layout class="QVBoxLayout" name="verticalLayout_6">
+   <item>
     <widget class="QTabWidget" name="mainTab">
      <property name="currentIndex">
-      <number>0</number>
+      <number>4</number>
      </property>
      <widget class="QWidget" name="loginTab">
       <attribute name="title">
@@ -546,41 +546,29 @@
       <attribute name="title">
        <string>账号管理页</string>
       </attribute>
-      <widget class="QPushButton" name="generate_file_xls_btn">
-       <property name="geometry">
-        <rect>
-         <x>330</x>
-         <y>150</y>
-         <width>231</width>
-         <height>23</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>导出当前所有文件的xls信息</string>
-       </property>
-      </widget>
-      <widget class="QWidget" name="layoutWidget">
-       <property name="geometry">
-        <rect>
-         <x>5</x>
-         <y>380</y>
-         <width>921</width>
-         <height>141</height>
-        </rect>
-       </property>
-       <layout class="QVBoxLayout" name="verticalLayout_2">
-        <item>
-         <widget class="QLabel" name="label_33">
-          <property name="text">
-           <string>调试信息</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QTextBrowser" name="account_info_log_text"/>
-        </item>
-       </layout>
-      </widget>
+      <layout class="QGridLayout" name="gridLayout_8">
+       <item row="0" column="0">
+        <widget class="QPushButton" name="generate_file_xls_btn">
+         <property name="text">
+          <string>导出当前所有文件的xls信息</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <item>
+          <widget class="QLabel" name="label_33">
+           <property name="text">
+            <string>调试信息</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QTextBrowser" name="account_info_log_text"/>
+         </item>
+        </layout>
+       </item>
+      </layout>
      </widget>
      <widget class="QWidget" name="prepubTab">
       <attribute name="title">
@@ -657,7 +645,7 @@ p, li { white-space: pre-wrap; }
          </item>
         </layout>
        </item>
-       <item row="1" column="0" colspan="2">
+       <item row="1" column="0" rowspan="3">
         <layout class="QVBoxLayout" name="verticalLayout_3">
          <item>
           <widget class="QLabel" name="label_34">
@@ -671,11 +659,54 @@ p, li { white-space: pre-wrap; }
          </item>
         </layout>
        </item>
+       <item row="1" column="1">
+        <widget class="QLabel" name="label_13">
+         <property name="text">
+          <string>高级选项</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_13">
+         <item>
+          <widget class="QLabel" name="label_7">
+           <property name="text">
+            <string>文件夹搜索层数（对本地文件有效）</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="dir_search_depth_edit">
+           <property name="text">
+            <string>1</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="3" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_14">
+         <item>
+          <widget class="QLabel" name="label_11">
+           <property name="text">
+            <string>最小文件限制（KB）</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="min_file_limit_edit">
+           <property name="text">
+            <string>4</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
       </layout>
      </widget>
     </widget>
    </item>
-   <item row="2" column="0">
+   <item>
     <widget class="QLabel" name="message_label">
      <property name="text">
       <string>信息提示栏</string>
