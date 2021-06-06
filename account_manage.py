@@ -3,7 +3,7 @@ from PySide2.QtWidgets import QFileDialog
 import pathlib
 from common import *
 import requests
-import xlwt
+
 from pathlib import Path
 import time
 

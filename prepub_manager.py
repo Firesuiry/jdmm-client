@@ -1,15 +1,14 @@
 import os
 import pathlib
 import time
-
-import xlwt
+import openpyxl
 from PySide2.QtCore import QThread, Signal
 from PySide2.QtWidgets import QFileDialog
 
-from common import cal_md5
+from common import cal_md5, write_xlsx
 import sqlite3
 
-FILE_XLS_FILE = './要发布文件.xls'
+FILE_XLS_FILE = './要发布文件.xlsx'
 
 
 class GenerateBaiduPanFileXlsWorker(QThread):
@@ -22,6 +21,8 @@ class GenerateBaiduPanFileXlsWorker(QThread):
 
     def run(self):
         self.export_baidupan_file_info()
+        self.generate_data_xls()
+        return
         try:
             self.generate_data_xls()
         except PermissionError:
@@ -30,6 +31,7 @@ class GenerateBaiduPanFileXlsWorker(QThread):
             self.log_signal.emit(f'出现错误 {e}')
 
     def export_baidupan_file_info(self):
+        print('export_baidupan_file_info')
         conn = sqlite3.connect(self.dbpath)
         cursor = conn.cursor()
         # 执行查询语句：
@@ -43,35 +45,24 @@ class GenerateBaiduPanFileXlsWorker(QThread):
         return values
 
     def generate_data_xls(self):
-        book = xlwt.Workbook(encoding="utf-8", style_compression=0)
-        sheet = book.add_sheet('test01', cell_overwrite_ok=True)
-        sheet.write(0, 0, '标题')
-        sheet.write(0, 1, '描述')
-        sheet.write(0, 2, '网盘链接')
-        sheet.write(0, 3, '网盘提取码')
-        sheet.write(0, 4, '解压密码')
-        sheet.write(0, 5, '价格')
-        sheet.write(0, 6, '文件类型')
-        sheet.write(0, 7, '文件大小')
-        row = 1
+        print('generate_data_xls')
+        titles = ['标题', '描述', '网盘链接', '网盘提取码', '解压密码', '价格', '文件类型', '文件大小']
+        write_datas = []
         for data in self.values:
             size = data[1]
-            if size < 2**12:
-                continue
-            sheet.write(row, 0, data[0])
-            sheet.write(row, 1, f"文件标题：{data[3]}{data[0]}")
-            sheet.write(row, 2, 'PREPUB')
-            sheet.write(row, 5, '1')
-            sheet.write(row, 6, data[0].split('.')[-1] if '.' in data[0] else '')
-            sheet.write(row, 7, '{:.2f}MB'.format(data[1] / 2 ** 20))
-            # self.log_signal.emit(f"正在写入第{row}条数据：{data[0]}")
-            row += 1
-            if row > 65530:
-                self.log_signal.emit(f"文件过多 只能导出前65530个文件")
-                break
+            # if size < 2 ** 0:
+            #     continue
+            write_data = ['' for _ in range(9)]
+            write_data[0] = file_title = data[0]
+            write_data[1] = file_des = f"文件标题：{data[3]}{data[0]}"
+            write_data[2] = file_url = 'PREPUB'
+            write_data[4] = prize = '1'
+            write_data[6] = file_type = data[0].split('.')[-1] if '.' in data[0] else ''
+            write_data[7] = file_size = '{:.2f}MB'.format(data[1] / 2 ** 20)
+            write_datas.append(write_data)
 
-        book.save(FILE_XLS_FILE)
-        self.log_signal.emit(f"已经写入完成 共计{row}条数据")
+        write_xlsx(titles, write_datas, '要发布文件.xlsx')
+        self.log_signal.emit(f"已经写入完成 共计{len(self.values)}条数据")
         self.log_signal.emit(f"请查看上方的介绍完成下一步发布")
 
 
@@ -83,28 +74,20 @@ class GenerateFileXlsWorker(QThread):
         self.datas = datas
 
     def generate_data_xls(self):
-        book = xlwt.Workbook(encoding="utf-8", style_compression=0)
-        sheet = book.add_sheet('test01', cell_overwrite_ok=True)
-        sheet.write(0, 0, '标题')
-        sheet.write(0, 1, '描述')
-        sheet.write(0, 2, '网盘链接')
-        sheet.write(0, 3, '网盘提取码')
-        sheet.write(0, 4, '解压密码')
-        sheet.write(0, 5, '价格')
-        sheet.write(0, 6, '文件类型')
-        sheet.write(0, 7, '文件大小')
-        row = 1
+        titles = ['标题', '描述', '网盘链接', '网盘提取码', '解压密码', '价格', '文件类型', '文件大小']
+        write_datas = []
         for data in self.datas:
-            sheet.write(row, 0, data.get('name', ''))
-            sheet.write(row, 1, f"文件标题：{data.get('name', '')}")
-            sheet.write(row, 2, 'PREPUB')
-            sheet.write(row, 5, '1')
-            sheet.write(row, 6, data.get('type', ''))
-            sheet.write(row, 7, data.get('size', ''))
-            # self.log_signal.emit(f"正在写入第{row}条数据：{data.get('name', '')}")
-            row += 1
-        book.save(FILE_XLS_FILE)
-        self.log_signal.emit(f"已经写入完成 共计{row}条数据")
+            write_data = ['' for _ in range(9)]
+            write_data[0] = data.get('name', '')
+            write_data[1] = f"文件标题：{data.get('name', '')}"
+            write_data[2] = 'PREPUB'
+            write_data[5] = '1'
+            write_data[6] = data.get('type', '')
+            write_data[7] = data.get('size', '')
+            write_datas.append(write_data)
+
+        write_xlsx(titles, write_datas, '要发布文件.xlsx')
+        self.log_signal.emit(f"已经写入完成 共计{len(self.datas)}条数据")
         self.log_signal.emit(f"请查看上方的介绍完成下一步发布")
 
     def run(self):
@@ -181,6 +164,7 @@ class PrepubWidget:
 
 
 if __name__ == '__main__':
-    dbpath = r'D:\Users\cass\AppData\Roaming\baidu\BaiduNetdisk\users\eabe70b53624ca13c9dcabe2da9c573a\BaiduYunCacheFileV0.db'
+    print('start')
+    dbpath = r'C:\Users\Administrator\AppData\Roaming\baidu\BaiduNetdisk\users\eabe70b53624ca13c9dcabe2da9c573a\BaiduYunCacheFileV0.db'
     p = GenerateBaiduPanFileXlsWorker(dbpath)
     p.run()

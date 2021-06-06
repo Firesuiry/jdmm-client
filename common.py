@@ -4,6 +4,8 @@ import re
 import subprocess
 import uuid
 
+import openpyxl
+
 HEAD_STRUCT = bytes('128sIq32s', encoding='utf-8')
 FILE_UPLOAD_URL = 'https://www.jiandanmaimai.cn/file/api/files/'
 CLIENT_INFO_URL = 'https://www.jiandanmaimai.cn/file/api/client/'
@@ -59,3 +61,22 @@ def get_MAC():
     mac = uuid.uuid1().hex[-12:].upper()
     print('当前主机MAC地址为：{}'.format(mac))
     return mac
+
+
+def write_xlsx(titles, datas, file_path):
+    book = openpyxl.Workbook()
+    sheet = book.create_sheet('files', 0)
+    col = 1
+    print(locals())
+    for title in titles:
+        sheet.cell(1, col, title)
+        col += 1
+
+    row = 2
+    for row_data in datas:
+        col = 1
+        for data in row_data:
+            sheet.cell(row, col, data)
+            col += 1
+        row += 1
+    book.save(file_path)
