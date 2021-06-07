@@ -1,2 +1,2 @@
-echo pyinstaller main.py --noconsole --hidden-import PySide2.QtXml -F
-pyinstaller main.py --hidden-import PySide2.QtXml -F
+echo pyinstaller main.py --hidden-import PySide2.QtXml -F --hidden-import openpyxl
+pyinstaller main.py --hidden-import PySide2.QtXml -F --hidden-import openpyxl

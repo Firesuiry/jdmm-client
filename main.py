@@ -12,6 +12,7 @@ from data import get_key, set_key
 from file_server import JdmmFileServer
 from multi_uploader import MultiUploadWidget, get_table_content, set_table_content
 from prepub_manager import PrepubWidget
+import openpyxl
 
 
 class EmptyDelegate(QItemDelegate):

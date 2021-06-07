@@ -1,5 +1,6 @@
 # -*- mode: python ; coding: utf-8 -*-
 
+
 block_cipher = None
 
 
@@ -7,7 +8,7 @@ a = Analysis(['main.py'],
              pathex=['E:\\webDevelop\\jdmm-client'],
              binaries=[],
              datas=[],
-             hiddenimports=['PySide2.QtXml'],
+             hiddenimports=['PySide2.QtXml', 'openpyxl'],
              hookspath=[],
              runtime_hooks=[],
              excludes=[],

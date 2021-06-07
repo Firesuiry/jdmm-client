@@ -74,14 +74,14 @@ def write_xlsx(titles, datas, file_path, add=False):
 
     col = 1
     for title in titles:
-        sheet.cell(1, col, title)
+        sheet.cell(row=1, column=col).value = title
         col += 1
 
     row = 2
     have_add_list = []
     if add:
         while True:
-            d = sheet.cell(row, 1).value
+            d = sheet.cell(row=row, column=1).value
             if d:
                 have_add_list.append(d)
                 row += 1
@@ -92,7 +92,7 @@ def write_xlsx(titles, datas, file_path, add=False):
         if row_data[0] not in have_add_list:
             col = 1
             for data in row_data:
-                sheet.cell(row, col, data)
+                sheet.cell(row=row, column=col).value = data
                 col += 1
             row += 1
     book.save(file_path)
