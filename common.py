@@ -63,20 +63,47 @@ def get_MAC():
     return mac
 
 
-def write_xlsx(titles, datas, file_path):
-    book = openpyxl.Workbook()
-    sheet = book.create_sheet('files', 0)
+def write_xlsx(titles, datas, file_path, add=False):
+    add = add and os.path.exists(file_path)
+    if add:
+        book = openpyxl.load_workbook(file_path)
+        sheet = book['files']
+    else:
+        book = openpyxl.Workbook()
+        sheet = book.create_sheet('files', 0)
+
     col = 1
-    print(locals())
     for title in titles:
         sheet.cell(1, col, title)
         col += 1
 
     row = 2
+    have_add_list = []
+    if add:
+        while True:
+            d = sheet.cell(row, 1).value
+            if d:
+                have_add_list.append(d)
+                row += 1
+            else:
+                break
+
     for row_data in datas:
-        col = 1
-        for data in row_data:
-            sheet.cell(row, col, data)
-            col += 1
-        row += 1
+        if row_data[0] not in have_add_list:
+            col = 1
+            for data in row_data:
+                sheet.cell(row, col, data)
+                col += 1
+            row += 1
     book.save(file_path)
+
+def has_chinese(s):
+    """
+    检查整个字符串是否包含中文
+    :param s: 需要检查的字符串
+    :return: bool
+    """
+    for ch in s:
+        if u'\u4e00' <= ch <= u'\u9fff':
+            return True
+    return False

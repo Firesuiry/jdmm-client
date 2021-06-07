@@ -662,7 +662,13 @@ p, li { white-space: pre-wrap; }
        <item row="1" column="1">
         <widget class="QLabel" name="label_13">
          <property name="text">
-          <string>高级选项</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;高级选项 &lt;a href=&quot;https://gitee.com/firesuiry/jdmm-client/wikis/%20%E6%96%87%E4%BB%B6%E9%A2%84%E5%8F%91%E5%B8%83%20%E9%AB%98%E7%BA%A7%E9%80%89%E9%A1%B9%E4%BB%8B%E7%BB%8D?sort_id=4095672&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;使用说明&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::RichText</enum>
+         </property>
+         <property name="openExternalLinks">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -676,7 +682,7 @@ p, li { white-space: pre-wrap; }
        <item row="2" column="2">
         <widget class="QLineEdit" name="dir_search_depth_edit">
          <property name="text">
-          <string>1</string>
+          <string>999</string>
          </property>
         </widget>
        </item>
@@ -708,7 +714,7 @@ p, li { white-space: pre-wrap; }
         </widget>
        </item>
        <item row="4" column="2">
-        <widget class="QLineEdit" name="min_file_limit_edit_2">
+        <widget class="QLineEdit" name="dir_limit_edit">
          <property name="text">
           <string/>
          </property>
@@ -728,7 +734,7 @@ p, li { white-space: pre-wrap; }
         </widget>
        </item>
        <item row="5" column="2">
-        <widget class="QLineEdit" name="min_file_limit_edit_3">
+        <widget class="QLineEdit" name="re_str_edit">
          <property name="text">
           <string/>
          </property>
@@ -741,16 +747,29 @@ p, li { white-space: pre-wrap; }
         </widget>
        </item>
        <item row="6" column="1">
-        <widget class="QCheckBox" name="checkBox">
+        <widget class="QCheckBox" name="filter_dir_Cb">
          <property name="text">
           <string>过滤文件夹条目</string>
          </property>
         </widget>
        </item>
+       <item row="6" column="2">
+        <widget class="QCheckBox" name="add_cb">
+         <property name="text">
+          <string>如文件已存在，追加而不覆盖</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
        <item row="7" column="1">
-        <widget class="QCheckBox" name="checkBox_2">
+        <widget class="QCheckBox" name="filter_chinese_cb">
          <property name="text">
           <string>过滤没有中文条目</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
