@@ -14,6 +14,8 @@ from multi_uploader import MultiUploadWidget, get_table_content, set_table_conte
 from prepub_manager import PrepubWidget
 import openpyxl
 
+from utils.lanzouyun import test
+
 
 class EmptyDelegate(QItemDelegate):
     def __init__(self, parent):

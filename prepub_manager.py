@@ -9,7 +9,60 @@ from PySide2.QtWidgets import QFileDialog
 from common import cal_md5, write_xlsx, has_chinese
 import sqlite3
 
+from utils.lanzouyun import lzy_login, lzy_get_files
+
 FILE_XLS_FILE = './要发布文件.xlsx'
+
+
+class GenerateLzyXlsWorker(QThread):
+    log_signal = Signal(str)
+
+    def __init__(self, cookie, config):
+        super().__init__()
+        self.cookie = cookie
+        self.config = config
+        self.values = []
+        self.lzy_client = None
+
+    def run(self) -> None:
+        self.log_signal.emit('程序开始执行，请勿操作以免卡死')
+        self.log_signal.emit('开始登录')
+        self.lzy_client = lzy_login(self.cookie)
+        if self.lzy_client is None:
+            self.log_signal.emit('蓝奏云登录失败')
+            return
+        self.values = lzy_get_files(self.lzy_client, include_dir=(not self.config.get('filter_dir')))
+        self.log_signal.emit('获取{}条数据 开始写入' .format(len(self.values)))
+        try:
+            self.generate_data_xls()
+        except PermissionError:
+            self.log_signal.emit(f'出现错误 请手动删除 要发布文件.xls 或者关闭wps或excel')
+        except Exception as e:
+            self.log_signal.emit(f'出现错误 {e}')
+
+
+    def generate_data_xls(self):
+        print('generate_data_xls')
+        titles = ['标题', '描述', '网盘链接', '网盘提取码', '解压密码', '价格', '文件类型', '文件大小']
+        write_datas = []
+        for data in self.values:
+            write_data = ['' for _ in range(9)]
+            write_data[0] = file_title = data['name']
+            write_data[1] = file_des = f"文件标题：{data['des']}"
+            write_data[2] = file_url = data['download_url']
+            write_data[3] = data['tiquma']
+            write_data[5] = prize = '1'
+            write_data[6] = file_type = data['type']
+            write_data[7] = file_size = '{:.2f}MB'.format(data['size'] / 2 ** 20)
+            res = file_check(file_name=file_title, file_size=data['size'], is_dir=data['isdir'], config=self.config,
+                             source='PAN',
+                             parent_dir=data['parent'])
+            if res:
+                write_datas.append(write_data)
+
+        write_xlsx(titles, write_datas, '要发布文件.xlsx', add=self.config['add'])
+        self.log_signal.emit(f"已经写入完成 共计{len(write_datas)}条数据")
+        self.log_signal.emit(f"请查看上方的介绍完成下一步发布")
 
 
 class GenerateBaiduPanFileXlsWorker(QThread):
@@ -79,7 +132,6 @@ class GenerateFileXlsWorker(QThread):
         self.datas = []
         self.config = config
 
-
     def add_file_info(self, path, search_depth):
         path = pathlib.Path(path)
         files = path.glob('*')
@@ -143,6 +195,20 @@ class PrepubWidget:
 
         self.window.select_prepub_file_btn.clicked.connect(self.process_directory)
         self.window.select_baidupan_out_file.clicked.connect(self.process_baidupan_db_file)
+        self.window.lzyStartGenerateBtn.clicked.connect(self.lanzouyun_start_generate)
+
+    def lanzouyun_start_generate(self):
+        self.add_log('开始执行蓝奏云文件预分享')
+        lzy_cookie = self.window.LzyCookieTextEdit.toPlainText()
+        self.add_log(lzy_cookie)
+        if 'ylogin' not in lzy_cookie or 'phpdisk_info' not in lzy_cookie:
+            self.add_log('cookie有错 没有包含ylogin和phpdisk_info')
+            return
+        config = self.get_config()
+
+        self.lzypan_prepub = GenerateLzyXlsWorker(cookie=lzy_cookie, config=config)
+        self.lzypan_prepub.log_signal.connect(self.add_log)
+        self.lzypan_prepub.start()
 
     def process_directory(self):
         config = self.get_config()

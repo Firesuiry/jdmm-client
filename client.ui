@@ -613,7 +613,10 @@ p, li { white-space: pre-wrap; }
          <item>
           <widget class="QLabel" name="label_5">
            <property name="text">
-            <string>网盘文件预发布</string>
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;百度网盘文件预发布 &lt;a href=&quot;https://gitee.com/firesuiry/jdmm-client/wikis/%E5%A6%82%E4%BD%95%E6%89%BE%E5%88%B0%E7%99%BE%E5%BA%A6%E7%BD%91%E7%9B%98%E7%9A%84BaiduYunCacheFileV0.db%E6%96%87%E4%BB%B6?sort_id=4075325&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;如何找文件&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="openExternalLinks">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
@@ -632,14 +635,44 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'SimSun'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;百度网盘文件发布介绍&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;1.找到百度网盘的BaiduYunCacheFileV0.db文件 寻找方式请看：&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;https://gitee.com/firesuiry/jdmm-client/wikis/%E5%A6%82%E4%BD%95%E6%89%BE%E5%88%B0%E7%99%BE%E5%BA%A6%E7%BD%91%E7%9B%98%E7%9A%84BaiduYunCacheFileV0.db%E6%96%87%E4%BB%B6?sort_id=4075325&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;1.找到百度网盘的BaiduYunCacheFileV0.db文件 寻找方式点击上面的如何找文件&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;2.点击上方按钮 选中找到的文件&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;3.选择完成后会在本程序所在目录下生成 要发布的文件.xls文件&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;打开生成的xls文件 编辑要发布的文件 复制到批量上传功能页进行发布&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
            <property name="openExternalLinks">
             <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="0" column="3">
+        <layout class="QVBoxLayout" name="verticalLayout_7">
+         <item>
+          <widget class="QLabel" name="label_27">
+           <property name="text">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;蓝奏云文件批量导出 &lt;a href=&quot;https://gitee.com/firesuiry/jdmm-client/wikis/%20%E5%A6%82%E4%BD%95%E9%A2%84%E5%8F%91%E5%B8%83%E8%93%9D%E5%A5%8F%E4%BA%91%E4%B8%AD%E7%9A%84%E6%96%87%E4%BB%B6?sort_id=4169771&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;首次使用请点此&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="textFormat">
+            <enum>Qt::RichText</enum>
+           </property>
+           <property name="openExternalLinks">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="lzyStartGenerateBtn">
+           <property name="text">
+            <string>导出文件</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QTextEdit" name="LzyCookieTextEdit">
+           <property name="placeholderText">
+            <string>此处填写蓝奏云cookie</string>
            </property>
           </widget>
          </item>
@@ -679,7 +712,7 @@ p, li { white-space: pre-wrap; }
          </property>
         </widget>
        </item>
-       <item row="2" column="2">
+       <item row="2" column="2" colspan="2">
         <widget class="QLineEdit" name="dir_search_depth_edit">
          <property name="text">
           <string>999</string>
@@ -693,7 +726,7 @@ p, li { white-space: pre-wrap; }
          </property>
         </widget>
        </item>
-       <item row="3" column="2">
+       <item row="3" column="2" colspan="2">
         <widget class="QLineEdit" name="min_file_limit_edit">
          <property name="text">
           <string>4</string>
@@ -709,11 +742,11 @@ p, li { white-space: pre-wrap; }
        <item row="4" column="1">
         <widget class="QLabel" name="label_25">
          <property name="text">
-          <string>仅生成此文件夹下的文件（对百度网盘有效）</string>
+          <string>仅生成此文件夹下的文件（对网盘有效）</string>
          </property>
         </widget>
        </item>
-       <item row="4" column="2">
+       <item row="4" column="2" colspan="2">
         <widget class="QLineEdit" name="dir_limit_edit">
          <property name="text">
           <string/>
@@ -733,7 +766,7 @@ p, li { white-space: pre-wrap; }
          </property>
         </widget>
        </item>
-       <item row="5" column="2">
+       <item row="5" column="2" colspan="2">
         <widget class="QLineEdit" name="re_str_edit">
          <property name="text">
           <string/>
@@ -753,7 +786,7 @@ p, li { white-space: pre-wrap; }
          </property>
         </widget>
        </item>
-       <item row="6" column="2">
+       <item row="6" column="2" colspan="2">
         <widget class="QCheckBox" name="add_cb">
          <property name="text">
           <string>如文件已存在，追加而不覆盖</string>
