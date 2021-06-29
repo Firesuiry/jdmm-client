@@ -31,7 +31,7 @@ class GenerateLzyXlsWorker(QThread):
         if self.lzy_client is None:
             self.log_signal.emit('蓝奏云登录失败')
             return
-        self.values = lzy_get_files(self.lzy_client, include_dir=(not self.config.get('filter_dir')))
+        self.values = lzy_get_files(self.lzy_client, include_dir=(not self.config.get('filter_dir')), dir_name_filter=self.config.get('dir_limit'))
         self.log_signal.emit('获取{}条数据 开始写入' .format(len(self.values)))
         try:
             self.generate_data_xls()

@@ -1,3 +1,4 @@
 requests
 PySide2
 openpyxl==2.3.4
+lanzou-api

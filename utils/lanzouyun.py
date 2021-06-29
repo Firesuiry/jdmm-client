@@ -24,7 +24,7 @@ def lzy_login(cookies):
     return lzy
 
 
-def lzy_get_files(lzy, dir=-1, deepth=9999, path='/', include_dir=False):
+def lzy_get_files(lzy, dir=-1, deepth=9999, path='/', include_dir=False, dir_name_filter=''):
     datas = []
     dirs = lzy.get_dir_list(dir)
     files = lzy.get_file_list(dir)
@@ -34,6 +34,9 @@ def lzy_get_files(lzy, dir=-1, deepth=9999, path='/', include_dir=False):
     if deepth > 1:
         for dir in dirs:
             new_datas = lzy_get_files(lzy, dir.id, deepth - 1, path + dir.name + '/')
+            if dir_name_filter:
+                if dir_name_filter != dir.name:
+                    continue
             datas += new_datas
             if include_dir:
                 datas.append(get_share_info(lzy, dir, path, isdir=True))
