@@ -1,4 +1,5 @@
 from lanzou.api import LanZouCloud
+import urllib.parse
 
 final_files = []
 final_share_infos = []
@@ -6,37 +7,43 @@ final_share_infos = []
 
 def lzy_login(cookies):
     lzy = LanZouCloud()
-    cookies = cookies.split()
-    cookie_dic = {}
-    for cookie in cookies:
-        cookie.replace(' ', '')
-        cookie.replace(';', '')
-        if '=' in cookie:
-            kvs = cookie.split('=')
-            k = kvs[0]
-            v = kvs[1]
-            cookie_dic[k] = v
+    cookie_dic = cookie_to_dic(cookies)
     print(cookie_dic)
-    code = lzy.login_by_cookie(cookie_dic)
+    cookies = {
+        'ylogin': cookie_dic['ylogin'],
+        'phpdisk_info': urllib.parse.quote(cookie_dic['phpdisk_info'])
+    }
+    print(cookies)
+    code = lzy.login_by_cookie(cookies)
+
     print('登录结果', code)
     if code != 0:
         return None
     return lzy
 
 
+def cookie_to_dic(mycookie):
+    dic = {}
+    for i in mycookie.split('; '):
+        dic[i.split('=', 1)[0]] = i.split('=', 1)[1]
+    return dic
+
+
 def lzy_get_files(lzy, dir=-1, deepth=9999, path='/', include_dir=False, dir_name_filter=''):
+    print(f'lzy_get_files {locals()}')
     datas = []
-    dirs = lzy.get_dir_list(dir)
-    files = lzy.get_file_list(dir)
-    for file in files:
-        data = get_share_info(lzy, file, path)
-        datas.append(data)
+    if dir_name_filter and dir_name_filter not in path.split('/'):
+        print(f'跳过当前目录 {path}')
+    else:
+        files = lzy.get_file_list(dir)
+        for file in files:
+            data = get_share_info(lzy, file, path)
+            datas.append(data)
     if deepth > 1:
+        dirs = lzy.get_dir_list(dir)
         for dir in dirs:
-            new_datas = lzy_get_files(lzy, dir.id, deepth - 1, path + dir.name + '/')
-            if dir_name_filter:
-                if dir_name_filter != dir.name:
-                    continue
+            new_datas = lzy_get_files(lzy, dir.id, deepth - 1, path + dir.name + '/', include_dir=include_dir,
+                                      dir_name_filter=dir_name_filter)
             datas += new_datas
             if include_dir:
                 datas.append(get_share_info(lzy, dir, path, isdir=True))
@@ -69,14 +76,15 @@ def get_share_info(lzy, file, path, isdir=False):
 
 
 def test():
-    lzy = lzy_login(cookies)
-    datas = lzy_get_files(lzy, include_dir=True)
-    for data in datas:
-        print(data)
+    lzy = lzy_login(cookies.replace('\n',''))
+    # datas = lzy_get_files(lzy, include_dir=True)
+    # for data in datas:
+    #     print(data)
 
 
 cookies = '''
-PHPSESSID=rvglnr9549hoethgdf6q4u2eo2bsv8sq; UM_distinctid=17a3d30f50da50-0d3f2f54a3a955-7a697d6e-1fa400-17a3d30f50e3cf; CNZZDATA1253610888=670235887-1624523794-null|1624523794; _uab_collina=162452425806835047708244; CNZZDATA1253610886=723202744-1624519608-https%3A%2F%2Fup.woozooo.com%2F|1624525021; ylogin=2062551; phpdisk_info=VWNRYwNnVmgGMQJnD2RaCVA0AQoAaFMxATBXNAY5UWIDN1FlBGRWbAM4Vw4OZAQ8WjIDY1kwXDxTMwloUmIDOFU1UWsDaVZqBjQCZw9gWjFQZgE1AGpTMQE1VzMGZVFgAzFRYwRmVmoDNFdjDl0Eb1o/AzNZM1wyU2EJaVJiAzNVZ1Fq; folder_id_c=-1' \
 '''
+
+
 if __name__ == '__main__':
     test()
