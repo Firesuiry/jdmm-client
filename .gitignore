@@ -5,3 +5,4 @@
 *.xlsx
 *.spec
 *.pyc
+venv
