@@ -17,6 +17,7 @@ class GenerateFileXlsWorker(QThread):
     def __init__(self, cookie):
         super().__init__()
         self.cookie = cookie
+        # ；；；
 
     def generate_data_xls(self):
         next_url = FILE_QUERY_URL
