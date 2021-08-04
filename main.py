@@ -25,9 +25,6 @@ class EmptyDelegate(QItemDelegate):
         return None
 
 
-
-
-
 class LoginWorker(QThread):
     login_finish_signal = Signal(requests.Response)
 
@@ -120,9 +117,6 @@ class PublistWorker(QThread):
             self.pub_finish_signal.emit(res, row)
             if main_img:
                 f.close()
-
-
-
 
 
 class MainWindow(QWidget):
