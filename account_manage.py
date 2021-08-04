@@ -10,6 +10,7 @@ import time
 path = Path('./data')
 FILE_XLS_FILE = './已发布文件.xls'
 
+
 class GenerateFileXlsWorker(QThread):
     log_signal = Signal(str)
 
@@ -65,9 +66,6 @@ class GenerateFileXlsWorker(QThread):
         except Exception as e:
             print(e)
             self.log_signal.emit(f'出现错误 当前错误：{e}')
-
-
-
 
 
 class AccountManager:
