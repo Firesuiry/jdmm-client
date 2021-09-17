@@ -200,7 +200,7 @@ class MainWindow(QWidget):
 
     def ui_init(self):
         table = self.window.inforTable
-        table.setRowCount(10)
+        table.setRowCount(100)
         table.setItemDelegateForColumn(self.blockCol, EmptyDelegate(table))  # 设置第二列不可编辑
         table.setColumnWidth(self.blockCol, 280)
 
@@ -240,7 +240,8 @@ class MainWindow(QWidget):
     def on_addtable_btn_clicked(self):
         print('点击 增加行数按钮')
         table = self.window.inforTable
-        table.insertRow(0)
+        for _ in range(10):
+            table.insertRow(0)
 
     def on_clear_btn_clicked(self):
         table = self.window.inforTable
