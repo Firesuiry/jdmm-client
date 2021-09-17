@@ -10,12 +10,14 @@ import time
 path = Path('./data')
 FILE_XLS_FILE = './已发布文件.xls'
 
+
 class GenerateFileXlsWorker(QThread):
     log_signal = Signal(str)
 
     def __init__(self, cookie):
         super().__init__()
         self.cookie = cookie
+        # ；；；
 
     def generate_data_xls(self):
         next_url = FILE_QUERY_URL
@@ -65,9 +67,6 @@ class GenerateFileXlsWorker(QThread):
         except Exception as e:
             print(e)
             self.log_signal.emit(f'出现错误 当前错误：{e}')
-
-
-
 
 
 class AccountManager:
