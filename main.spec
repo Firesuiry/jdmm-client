@@ -5,7 +5,7 @@ block_cipher = None
 
 
 a = Analysis(['main.py'],
-             pathex=['D:\\develop\\jdmm-client'],
+             pathex=['E:\\webDevelop\\jdmm-client'],
              binaries=[],
              datas=[],
              hiddenimports=['PySide2.QtXml', 'openpyxl'],

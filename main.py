@@ -7,7 +7,7 @@ from PySide2.QtWidgets import QApplication, QItemDelegate, QTableWidgetItem, QMe
 import requests
 
 from account_manage import AccountManager
-from common import check_url
+from common import check_url, END_POINT
 from data import get_key, set_key
 from file_server import JdmmFileServer
 from multi_uploader import MultiUploadWidget, get_table_content, set_table_content
@@ -47,7 +47,7 @@ class LoginWorker(QThread):
             'password': pwd
 
         }
-        url = 'https://www.jiandanmaimai.cn/account/api/auth/'
+        url = f'{END_POINT}/account/api/auth/'
         res = requests.post(url, data)
         self.login_finish_signal.emit(res)
 
@@ -66,7 +66,7 @@ class PublistWorker(QThread):
         print('发布进程运行')
 
         table = self.table
-        post_url = 'https://www.jiandanmaimai.cn/file/api/files/'
+        post_url = f'{END_POINT}/file/api/files/'
 
         for row in range(table.rowCount()):
             pub_id = get_table_content(table, row, 0)
@@ -113,7 +113,8 @@ class PublistWorker(QThread):
             if main_img:
                 f = files['main_img'] = open(main_img, 'rb')
             print(data)
-            res = requests.post(post_url, data, cookies=self.cookie, files=files)
+            headers = {'referer': 'https://www.jiandanmaimai.cn/web/upload/'}
+            res = requests.post(post_url, data, cookies=self.cookie, files=files, headers=headers)
             self.pub_finish_signal.emit(res, row)
             if main_img:
                 f.close()
@@ -211,7 +212,7 @@ class MainWindow(QWidget):
     def check_login(self):
         if self.login:
             return True
-        url = 'https://www.jiandanmaimai.cn/account/api/auth/'
+        url = f'{END_POINT}/account/api/auth/'
         res = requests.get(url, cookies=self.cookie)
         data = res.json()
         if data.get('code') == 200:
@@ -267,7 +268,7 @@ class MainWindow(QWidget):
         self.pub_woker.start()
 
     def refresh_state(self):
-        url = 'https://www.jiandanmaimai.cn/account/api/user/0/'
+        url = f'{END_POINT}/account/api/user/0/'
         res = requests.get(url, cookies=self.cookie)
         print(res.json())
         data = res.json()

@@ -311,7 +311,7 @@ class JdmmFileServer:
             return
         self.fid = int(self.fid)
         self.add_log('即将检查:{}'.format(self.fid))
-        url = f'https://www.jiandanmaimai.cn/file/api/file/{self.fid}/'
+        url = f'{END_POINT}/file/api/file/{self.fid}/'
         self.check_worker = HttpWorker(url, method='GET', cookie=self.main.cookie)
         self.check_worker.finish_signal.connect(self.on_check_file_finished)
         self.check_worker.start()
@@ -348,7 +348,7 @@ class JdmmFileServer:
         if 'tags' in self.file_data: del self.file_data['tags']
         self.file_data['state'] = 'checking'
         # print(self.file_data.keys())
-        url = f'https://www.jiandanmaimai.cn/file/api/file/{self.fid}/'
+        url = f'{END_POINT}/file/api/file/{self.fid}/'
         self.fid = ''
         self.set_file_download_worker = HttpWorker(url, method='POST', data=self.file_data, cookie=self.main.cookie)
         self.set_file_download_worker.finish_signal.connect(self.on_set_file_download_finished)

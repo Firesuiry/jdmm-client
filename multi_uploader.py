@@ -1,6 +1,7 @@
 import requests
 from PySide2.QtCore import QThread, Signal
 from PySide2.QtWidgets import QWidget, QFileDialog, QTableWidgetItem
+from common import END_POINT
 
 
 class InitCateCbWorker(QThread):
@@ -10,7 +11,7 @@ class InitCateCbWorker(QThread):
         super(InitCateCbWorker, self).__init__()
 
     def run(self):
-        res = requests.get('http://www.jiandanmaimai.cn/file/api/category/')
+        res = requests.get(f'{END_POINT}/file/api/category/')
         self.init_finish_signal.emit(res)
 
 
