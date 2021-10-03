@@ -6,7 +6,8 @@ import uuid
 
 import openpyxl
 
-END_POINT = R'http://api.jiandanmaimai.cn'
+# END_POINT = R'http://api.jiandanmaimai.cn'
+END_POINT = R'https://www.jiandanmaimai.cn'
 HEAD_STRUCT = bytes('128sIq32s', encoding='utf-8')
 FILE_UPLOAD_URL = f'{END_POINT}/file/api/files/'
 CLIENT_INFO_URL = f'{END_POINT}/file/api/client/'
