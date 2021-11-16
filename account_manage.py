@@ -21,15 +21,7 @@ class GenerateFileXlsWorker(QThread):
 
     def generate_data_xls(self):
         next_url = FILE_QUERY_URL
-        book = xlwt.Workbook(encoding="utf-8", style_compression=0)
-        sheet = book.add_sheet('test01', cell_overwrite_ok=True)
-        sheet.write(0, 0, '标题')
-        sheet.write(0, 1, '价格')
-        sheet.write(0, 2, '创建时间')
-        sheet.write(0, 3, '编号')
-        sheet.write(0, 4, '下载地址')
-        sheet.write(0, 5, '简介')
-        row = 1
+        titles = ['标题', '价格', '创建时间', '编号', '下载地址', '简介']
         while next_url:
             print(next_url)
             res = requests.get(next_url, cookies=self.cookie)
@@ -38,22 +30,27 @@ class GenerateFileXlsWorker(QThread):
             result = data['results']
             if len(result) < 1:
                 break
+            write_datas = []
+            row = 0
             for file_data in result:
-                sheet.write(row, 0, file_data.get('title', ''))
-                sheet.write(row, 1, file_data.get('money', 0) / 100)
-                sheet.write(row, 2, file_data.get('c_time', ''))
-                sheet.write(row, 3, file_data.get('pk', 0))
-                sheet.write(row, 4, f"https://www.jiandanmaimai.cn/file/{file_data.get('pk', '')}/")
-                sheet.write(row, 5, file_data.get('markdown_describe', ''))
+                write_data = []
+                write_data.append(file_data.get('title', ''))
+                write_data.append(file_data.get('money', 0) / 100)
+                write_data.append(file_data.get('c_time', ''))
+                write_data.append(file_data.get('pk', 0))
+                write_data.append(f"https://www.jiandanmaimai.cn/file/{file_data.get('pk', '')}/")
+                write_data.append(file_data.get('markdown_describe', ''))
                 row += 1
                 time.sleep(0.1)
-                self.log_signal.emit(f"正在写入第{row}条数据：{file_data.get('title', '')} 编号：{file_data.get('pk', 0)}")
+            write_xlsx(titles, write_datas, add=True, file_path='account_file.xlsx')
+            self.log_signal.emit(f"正在写入第{row}条数据：{file_data.get('title', '')} 编号：{file_data.get('pk', 0)}")
 
             if next_next_url == next_url:
                 break
             else:
                 next_url = next_next_url
-        book.save(FILE_XLS_FILE)
+            if row > 1e2:
+                break
         self.log_signal.emit(f"已经写入完成 共计{row}条数据")
 
     def run(self):

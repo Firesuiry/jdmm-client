@@ -17,7 +17,7 @@
    <item>
     <widget class="QTabWidget" name="mainTab">
      <property name="currentIndex">
-      <number>4</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="loginTab">
       <attribute name="title">
@@ -539,34 +539,6 @@
           <string>开始上传并处理文件</string>
          </property>
         </widget>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="accountInfoTab">
-      <attribute name="title">
-       <string>账号管理页</string>
-      </attribute>
-      <layout class="QGridLayout" name="gridLayout_8">
-       <item row="0" column="0">
-        <widget class="QPushButton" name="generate_file_xls_btn">
-         <property name="text">
-          <string>导出当前所有文件的xls信息</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <layout class="QVBoxLayout" name="verticalLayout_2">
-         <item>
-          <widget class="QLabel" name="label_33">
-           <property name="text">
-            <string>调试信息</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QTextBrowser" name="account_info_log_text"/>
-         </item>
-        </layout>
        </item>
       </layout>
      </widget>
