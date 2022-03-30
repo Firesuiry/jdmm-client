@@ -8,7 +8,7 @@ from pathlib import Path
 import time
 
 path = Path('./data')
-FILE_XLS_FILE = './已发布文件.xls'
+FILE_XLS_FILE = '账户所有文件列表.xlsx'
 
 
 class GenerateFileXlsWorker(QThread):
@@ -22,8 +22,9 @@ class GenerateFileXlsWorker(QThread):
     def generate_data_xls(self):
         next_url = FILE_QUERY_URL
         titles = ['标题', '价格', '创建时间', '编号', '下载地址', '简介']
+        row = 0
         while next_url:
-            print(next_url)
+            # print(next_url)
             res = requests.get(next_url, cookies=self.cookie)
             data = res.json()
             next_next_url = data.get('next')
@@ -31,19 +32,19 @@ class GenerateFileXlsWorker(QThread):
             if len(result) < 1:
                 break
             write_datas = []
-            row = 0
             for file_data in result:
                 write_data = []
                 write_data.append(file_data.get('title', ''))
                 write_data.append(file_data.get('money', 0) / 100)
                 write_data.append(file_data.get('c_time', ''))
                 write_data.append(file_data.get('pk', 0))
-                write_data.append(f"https://www.jiandanmaimai.cn/file/{file_data.get('pk', '')}/")
+                write_data.append(f"https://www.jdmm.top/file/{file_data.get('pk', '')}/")
                 write_data.append(file_data.get('markdown_describe', ''))
+                write_datas.append(write_data)
                 row += 1
+                self.log_signal.emit(f"正在写入第{row}条数据：{file_data.get('title', '')} 编号：{file_data.get('pk', 0)}")
                 time.sleep(0.1)
-            write_xlsx(titles, write_datas, add=True, file_path='account_file.xlsx')
-            self.log_signal.emit(f"正在写入第{row}条数据：{file_data.get('title', '')} 编号：{file_data.get('pk', 0)}")
+            write_xlsx(titles, write_datas, add=True, file_path=FILE_XLS_FILE)
 
             if next_next_url == next_url:
                 break
@@ -55,9 +56,9 @@ class GenerateFileXlsWorker(QThread):
 
     def run(self):
         self.log_signal.emit('启动生成所有文件信息列表')
-        # if os.path.exists(FILE_XLS_FILE):
-        #     self.log_signal.emit(f'当前已有文件 重新生成请删除{FILE_XLS_FILE}')
-        #     return
+        if os.path.exists(FILE_XLS_FILE):
+            self.log_signal.emit(f'当前已有文件 重新生成请删除{FILE_XLS_FILE}')
+            return
 
         try:
             self.generate_data_xls()

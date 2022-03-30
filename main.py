@@ -149,7 +149,7 @@ class MainWindow(QWidget):
             self.on_login_btn_clicked()
 
         self.file_server = JdmmFileServer(self.window, self)
-        # self.account_manager = AccountManager(self.window, self)
+        self.account_manager = AccountManager(self.window, self)
         self.prepub = PrepubWidget(self.window, self)
 
     def login_btn_process(self, res):
