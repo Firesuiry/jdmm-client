@@ -8,6 +8,7 @@ import requests
 
 from account_manage import AccountManager
 from common import check_url, END_POINT
+from component.file_batch_process import FileBatchManager
 from data import get_key, set_key
 from file_server import JdmmFileServer
 from multi_uploader import MultiUploadWidget, get_table_content, set_table_content
@@ -151,6 +152,7 @@ class MainWindow(QWidget):
         self.file_server = JdmmFileServer(self.window, self)
         self.account_manager = AccountManager(self.window, self)
         self.prepub = PrepubWidget(self.window, self)
+        self.file_batch_manager = FileBatchManager(self.window, self)
 
     def login_btn_process(self, res):
         print('进入登陆信号回调')
