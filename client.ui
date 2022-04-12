@@ -807,7 +807,7 @@ p, li { white-space: pre-wrap; }
          <item>
           <widget class="QPushButton" name="file_list_read_btn">
            <property name="text">
-            <string>从A.xlsx中读取文件列表</string>
+            <string>从A.xlsx中读取文件列表(建议直接从表格复制，这个有时候会报错)</string>
            </property>
           </widget>
          </item>

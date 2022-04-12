@@ -6,6 +6,7 @@ import requests
 
 from pathlib import Path
 import time
+import traceback
 
 path = Path('./data')
 FILE_XLS_FILE = 'A.xlsx'
@@ -26,7 +27,7 @@ class ReadXlsxWorker(QThread):
             self.log_signal.emit(f'请手动创建文件：{FILE_XLS_FILE}')
             return
         try:
-            ws = openpyxl.load_workbook(FILE_XLS_FILE)
+            ws = openpyxl.load_workbook(FILE_XLS_FILE, read_only=True)
             sheet1 = ws.worksheets[0]
             row = 0
             file_indexs = []
@@ -40,7 +41,7 @@ class ReadXlsxWorker(QThread):
                 file_indexs.append(file_index)
             self.set_file_indexs_signal.emit(file_indexs)
         except Exception as e:
-            print(e)
+            traceback.print_exc()
             self.log_signal.emit(f'出现错误 当前错误：{e}')
 
 
@@ -134,15 +135,24 @@ class FileBatchManager:
         self.window.file_off_btn.clicked.connect(self.on_file_off_btn_clicked)
         self.window.file_on_btn.clicked.connect(self.on_file_on_btn_clicked)
         self.window.file_add_collection_btn.clicked.connect(self.on_file_add_collection_btn_clicked)
+        # self.window.generate_file_list_btn.clicked.connect(self.on_generate_file_list_btn_clicked)
         self.running = False
+
+    def on_generate_file_list_btn_clicked(self):
+        book = openpyxl.Workbook()
+        # sheet = book.create_sheet('files', 0)
+        book.save(FILE_XLS_FILE)
+        self.add_log('生成文件列表成功')
 
     def get_file_list(self):
         s = self.window.file_list.toPlainText()
-        strs = s.split(' ')
+        # print(s)
+        strs = s.split()
         indexs = []
         for s in strs:
             if str(s).isdigit():
                 indexs.append(int(s))
+        print(indexs)
         return indexs
 
     def on_file_list_read_btn_clicked(self):
