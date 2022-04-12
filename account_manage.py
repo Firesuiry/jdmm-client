@@ -50,8 +50,6 @@ class GenerateFileXlsWorker(QThread):
                 break
             else:
                 next_url = next_next_url
-            if row > 1e2:
-                break
         self.log_signal.emit(f"已经写入完成 共计{row}条数据")
 
     def run(self):
