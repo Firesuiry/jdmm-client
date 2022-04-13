@@ -264,7 +264,7 @@
        <item row="2" column="1">
         <widget class="QCheckBox" name="use_money_checkBox">
          <property name="text">
-          <string>突破数量限制（每个文件消耗0.1元）</string>
+          <string>突破数量限制（每个文件消耗0.1元,余额需大于10元）</string>
          </property>
         </widget>
        </item>
