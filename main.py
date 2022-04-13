@@ -57,11 +57,12 @@ class PublistWorker(QThread):
     pub_finish_signal = Signal(requests.Response, int)
     pub_fail_signal = Signal(str, int)
 
-    def __init__(self, table, cookie, cateCb):
+    def __init__(self, table, cookie, cateCb, use_money_checkBox):
         super(PublistWorker, self).__init__()
         self.table = table
         self.cookie = cookie
         self.cateCb = cateCb
+        self.use_money_checkBox = use_money_checkBox
 
     def run(self):
         print('发布进程运行')
@@ -113,6 +114,8 @@ class PublistWorker(QThread):
             files = {}
             if main_img:
                 f = files['main_img'] = open(main_img, 'rb')
+            if self.use_money_checkBox.isChecked():
+                data['use_money'] = 1
             print(data)
             headers = {'referer': 'https://www.jiandanmaimai.cn/web/upload/'}
             res = requests.post(post_url, data, cookies=self.cookie, files=files, headers=headers)
@@ -262,8 +265,9 @@ class MainWindow(QWidget):
             return
 
         self.window.publishBtn.setEnabled(False)
-
-        self.pub_woker = PublistWorker(self.table, self.cookie, self.window.cateCb)
+        # print(self.window.use_money_checkBox.isChecked())
+        # return
+        self.pub_woker = PublistWorker(self.table, self.cookie, self.window.cateCb, self.window.use_money_checkBox)
         self.pub_woker.pub_finish_signal.connect(self.on_publish_single_finish)
         self.pub_woker.finished.connect(self.on_publish_all_finish)
         self.pub_woker.pub_fail_signal.connect(self.on_publish_fail)
